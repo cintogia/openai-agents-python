@@ -55,5 +55,12 @@ serve-docs:
 deploy-docs:
 	uv run mkdocs gh-deploy --force --verbose
 
+.PHONY: test lint format
+
+test:
+	python -m pytest tests/
+
+.DEFAULT_GOAL := test
+
 	
 	

@@ -109,6 +109,11 @@ env.bak/
 venv.bak/
 .venv39
 .venv_res
+.env.dev
+.env.local
+.env.development
+.env.test
+.env.production
 
 # Spyder project settings
 .spyderproject
