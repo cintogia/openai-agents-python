@@ -1,14 +1,13 @@
-# Financial Research Agent Example
+# Project Management Agent Example
 
-This example shows how you might compose a richer financial research agent using the Agents SDK. The pattern is similar to the `research_bot` example, but with more specialized sub‑agents and a verification step.
+This example demonstrates how to build a project management assistant using the Agents SDK. The agent helps with project planning, scheduling, and coordination through a series of specialized sub-agents.
 
 The flow is:
 
-1. **Planning**: A planner agent turns the end user's request into a list of search terms relevant to financial analysis – recent news, earnings calls, corporate filings, industry commentary, etc.
-2. **Search**: A search agent uses the built‑in `WebSearchTool` to retrieve terse summaries for each search term. (You could also add `FileSearchTool` if you have indexed PDFs or 10‑Ks.)
-3. **Sub‑analysts**: Additional agents (e.g. a fundamentals analyst and a risk analyst) are exposed as tools so the writer can call them inline and incorporate their outputs.
-4. **Writing**: A senior writer agent brings together the search snippets and any sub‑analyst summaries into a long‑form markdown report plus a short executive summary.
-5. **Verification**: A final verifier agent audits the report for obvious inconsistencies or missing sourcing.
+1. **Project Input**: Gathers initial project information including timeline, team members, budget, and constraints.
+2. **Roadmap Planning**: Creates a detailed project roadmap with phases, epics, and stories.
+3. **Session Planning**: Breaks down the roadmap into sprints and schedules recurring meetings.
+4. **Calendar Coordination**: Matches team calendars to schedule all necessary events and meetings.
 
 ## Running the Example
 
@@ -17,7 +16,7 @@ The flow is:
 You can run the example with:
 
 ```bash
-python -m examples.financial_research_agent.main
+python -m examples.pm_agent.main
 ```
 
 ### Using Docker
@@ -30,8 +29,11 @@ The project includes Docker support for both development and production environm
 docker compose up app
 
 # Or run it directly with Docker
-docker build -t financial-research-agent .
-docker run -it -e OPENAI_API_KEY=your_api_key financial-research-agent
+docker build -t pm-agent .
+docker run -it pm-agent
+
+# Run using an environment file
+docker run -it --env-file .env pm-agent
 ```
 
 #### Development Environment
@@ -40,31 +42,31 @@ docker run -it -e OPENAI_API_KEY=your_api_key financial-research-agent
 docker compose up dev
 
 # Or run it directly with Docker
-docker build -t financial-research-agent-dev -f Dockerfile.dev .
-docker run -it -e OPENAI_API_KEY=your_api_key financial-research-agent-dev
+docker build -t pm-agent-dev -f Dockerfile.dev .
+docker run -it pm-agent-dev
 ```
 
-Note: Make sure to set your OPENAI_API_KEY environment variable before running the containers.
+## Example Usage
 
-## Example Query
+The agent will guide you through providing:
 
-Enter a query like:
+1. Project name and timeline
+2. Team member details (names, roles, availability)
+3. Budget information (hours and costs)
+4. Any specific constraints or requirements
 
-```
-Write up an analysis of Apple Inc.'s most recent quarter.
-```
+The agent will then:
 
-### Starter prompt
+1. Create a detailed project roadmap
+2. Break it down into sprints and stories
+3. Schedule all necessary meetings (standups, planning, etc.)
+4. Coordinate team calendars for optimal scheduling
 
-The writer agent is seeded with instructions similar to:
+### Agent Components
 
-```
-You are a senior financial analyst. You will be provided with the original query
-and a set of raw search summaries. Your job is to synthesize these into a
-long‑form markdown report (at least several paragraphs) with a short executive
-summary. You also have access to tools like `fundamentals_analysis` and
-`risk_analysis` to get short specialist write‑ups if you want to incorporate them.
-Add a few follow‑up questions for further research.
-```
+- **Project Input Agent**: Gathers and validates initial project information
+- **Roadmap Agent**: Creates detailed project roadmap with phases and epics
+- **Session Planner**: Organizes work into sprints and schedules ceremonies
+- **Calendar Agent**: Coordinates team calendars and schedules events
 
-You can tweak these prompts and sub‑agents to suit your own data sources and preferred report structure.
+The system is designed to be extensible - you can add additional specialized agents or modify the existing ones to suit your project management needs.
